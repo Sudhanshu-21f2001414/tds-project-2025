@@ -1,0 +1,44 @@
+description: "TDS Virtual TA Project Sample Questions"
+
+providers:
+  - id: local-api
+    config:
+      url: http://127.0.0.1:8000/query
+      method: POST
+      headers:
+        Content-Type: application/json
+      bodyJson:
+        question: "{{ question }}"
+        image: "{{ image | default('') }}"
+      transformResponse: json
+
+# OPTIONAL: Define default prompt template (if you're using `prompt`)
+prompts:
+  - id: default
+    provider: local-api
+    prompt: |
+      {{ question }}
+
+# If you don’t use prompt template above, define `provider: local-api` in each test
+
+tests:
+  - vars:
+      question: The question asks to use gpt-3.5-turbo-0125 model but the ai-proxy provided by Anand sir only supports gpt-4o-mini. So should we just use gpt-4o-mini or use the OpenAI API for gpt3.5 turbo?
+      image: file://project-tds-virtual-ta-q1.webp
+    provider: local-api
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: Clarifies use of gpt-3.5-turbo-0125 not gpt-4o-mini
+
+  - vars:
+      question: I know Docker but have not used Podman before. Should I use Docker for this course?
+    provider: local-api
+    assert:
+      - type: llm-rubric
+        transform: output.answer
+        value: Recommends Podman or says Docker is acceptable
+
+writeLatestResults: true
+commandLineOptions:
+  cache: true
