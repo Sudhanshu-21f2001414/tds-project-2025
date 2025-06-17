@@ -1,7 +1,9 @@
 services:
   - type: web
-    name: tds-fastapi
-    env: python
+    name: your-service-name
+    runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
-    plan: free
+    startCommand: python main.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.13
