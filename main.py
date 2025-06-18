@@ -47,7 +47,9 @@ async def root():
 # image file 
 
 @app.post("/query/")
+@app.post("/query", include_in_schema=False)
 async def answer_question(req: QuestionRequest):
+
     logging.info(f"📥 Incoming question: {req.question}")
 
     # ✅ Optional image logging for debugging (no processing)
