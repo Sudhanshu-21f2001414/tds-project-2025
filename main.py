@@ -9,7 +9,7 @@ from typing import Optional
 from openai import OpenAI
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-
+from fastapi.middleware.cors import CORSMiddleware
 # Setup
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
@@ -34,6 +34,16 @@ tfidf_matrix = vectorizer.fit_transform(texts) if texts else None
 
 # App
 app = FastAPI(redirect_slashes=True)
+
+# Add this CORS block right after
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 
 class QuestionRequest(BaseModel):
