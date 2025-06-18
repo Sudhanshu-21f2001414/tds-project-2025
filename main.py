@@ -33,7 +33,8 @@ vectorizer = TfidfVectorizer(stop_words="english")
 tfidf_matrix = vectorizer.fit_transform(texts) if texts else None
 
 # App
-app = FastAPI()
+app = FastAPI(redirect_slashes=True)
+
 
 class QuestionRequest(BaseModel):
     question: str
